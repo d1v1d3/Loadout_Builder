@@ -110,6 +110,29 @@ namespace LoadoutBuilder.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Camos");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Default weapon appearance",
+                            IsDeleted = false,
+                            Name = "Default"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Forest camouflage",
+                            IsDeleted = false,
+                            Name = "Forest"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Desert camouflage",
+                            IsDeleted = false,
+                            Name = "Desert"
+                        });
                 });
 
             modelBuilder.Entity("LoadoutBuilder.Data.Models.Category", b =>
@@ -128,6 +151,23 @@ namespace LoadoutBuilder.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Assault Rifle"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "SMG"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Sniper Rifle"
+                        });
                 });
 
             modelBuilder.Entity("LoadoutBuilder.Data.Models.Loadout", b =>
@@ -185,6 +225,29 @@ namespace LoadoutBuilder.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sight");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsDeleted = false,
+                            Range = 0,
+                            Type = "Red Dot"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsDeleted = false,
+                            Range = 1,
+                            Type = "Holographic"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsDeleted = false,
+                            Range = 2,
+                            Type = "Sniper Scope"
+                        });
                 });
 
             modelBuilder.Entity("LoadoutBuilder.Data.Models.SightCategory", b =>
@@ -200,6 +263,33 @@ namespace LoadoutBuilder.Data.Migrations
                     b.HasIndex("CotegoryId");
 
                     b.ToTable("SightCategory");
+
+                    b.HasData(
+                        new
+                        {
+                            SightId = 1,
+                            CotegoryId = 1
+                        },
+                        new
+                        {
+                            SightId = 1,
+                            CotegoryId = 2
+                        },
+                        new
+                        {
+                            SightId = 2,
+                            CotegoryId = 1
+                        },
+                        new
+                        {
+                            SightId = 2,
+                            CotegoryId = 2
+                        },
+                        new
+                        {
+                            SightId = 3,
+                            CotegoryId = 3
+                        });
                 });
 
             modelBuilder.Entity("LoadoutBuilder.Data.Models.Weapon", b =>
@@ -230,6 +320,32 @@ namespace LoadoutBuilder.Data.Migrations
                     b.HasIndex("CotegoryId");
 
                     b.ToTable("Weapons");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CotegoryId = 1,
+                            Description = "Assault rifle",
+                            IsDeleted = false,
+                            Name = "M4"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CotegoryId = 2,
+                            Description = "Submachine gun",
+                            IsDeleted = false,
+                            Name = "MP5"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CotegoryId = 3,
+                            Description = "Sniper rifle",
+                            IsDeleted = false,
+                            Name = "AWP"
+                        });
                 });
 
             modelBuilder.Entity("LoadoutBuilder.Data.Models.WeaponSlot", b =>

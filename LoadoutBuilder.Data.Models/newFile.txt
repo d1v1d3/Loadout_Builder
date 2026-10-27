@@ -1,0 +1,191 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+
+namespace LoadoutBuilder.Data.Models
+{
+    public class ApplicationUser : IdentityUser
+    {
+        public virtual ICollection<Loadout> Loadouts { get; set; } = new HashSet<Loadout>();
+    }
+}
+﻿using LoadoutBuilder.Common;
+using LoadoutBuilder.Data.Models.Contracts;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LoadoutBuilder.Data.Models
+{
+    public class Camo : ISoftDeletable
+    {
+        [Key]
+        public int Id { get; set; }
+        [Required]
+        [StringLength(ValidationConstants.Camo.NameMaxLength)]
+        public string Name { get; set; }
+        [StringLength(ValidationConstants.Camo.DescriptionMaxLength)]
+        public string? Description { get; set; }
+        public bool IsDeleted { get; set; } = false;
+        public virtual ICollection<WeaponSlot> WeaponSlots { get; set; } = new HashSet<WeaponSlot>();
+    }
+}
+﻿using LoadoutBuilder.Common;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LoadoutBuilder.Data.Models
+{
+    public class Category
+    {
+        [Key]
+        public int Id { get; set; }
+        [StringLength(ValidationConstants.Category.NameMaxLength)]
+        public string Name { get; set; }
+        public virtual ICollection<Weapon> Weapons { get; set; }
+        public virtual ICollection<SightCategory> SightCategories { get; set; }
+    }
+}
+﻿using LoadoutBuilder.Common;
+using LoadoutBuilder.Data.Models.Contracts;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LoadoutBuilder.Data.Models
+{
+    public class Loadout : ISoftDeletable
+    {
+        [Key]
+        public int Id { get; set; }
+        [StringLength(ValidationConstants.Loadout.NameMaxLength)]
+        public string Name { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.Now; 
+        public DateTime ModifiedOn { get; set; } = DateTime.Now;
+        public bool IsDeleted { get; set; } = false;
+        public virtual ICollection<WeaponSlot> WeaponSlots { get; set; } = new HashSet<WeaponSlot>();
+        public string UserId { get; set; }
+        [Required]
+        [ForeignKey("UserId")]
+        public ApplicationUser User { get; set; } = null!;
+    }
+}
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using LoadoutBuilder.Common;
+using LoadoutBuilder.Data.Models.Contracts;
+
+namespace LoadoutBuilder.Data.Models
+{
+    public class Sight :ISoftDeletable
+    {
+        [Key]
+        public int Id { get; set; }
+        [StringLength(ValidationConstants.Sight.TypeMaxLength)]
+        public string Type { get; set; }
+        public Range Range { get; set; }
+        public bool IsDeleted { get; set; } = false;
+        public ICollection<SightCategory> SightCategories { get; set; }
+        public virtual ICollection<WeaponSlot> WeaponSlots { get; set; } = new HashSet<WeaponSlot>();
+    }
+    public enum Range
+    {
+        Short,
+        Medium,
+        Long
+    }
+}
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LoadoutBuilder.Data.Models
+{
+    public class SightCategory
+    {
+        public int SightId { get; set; }
+        [ForeignKey(nameof(SightId))]
+        public Sight Sight { get; set; }
+        public int CotegoryId { get; set; }
+        [ForeignKey(nameof(CotegoryId))]
+        public virtual Category Category { get; set; }
+    }
+}
+﻿using LoadoutBuilder.Common;
+using LoadoutBuilder.Data.Models.Contracts;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LoadoutBuilder.Data.Models
+{
+    public class Weapon : ISoftDeletable
+    {
+        [Key]
+        public int Id { get; set; }
+        [Required]
+        [StringLength(ValidationConstants.Weapon.NameMaxLength)]
+        public string Name { get; set; }
+        [StringLength(ValidationConstants.Weapon.DescriptionMaxLength)]
+        public string? Description { get; set; }
+        public bool IsDeleted { get; set; } = false;
+        public int CotegoryId { get; set; }
+        [ForeignKey(nameof(CotegoryId))]
+        public virtual Category Category { get; set; }
+        public virtual ICollection<WeaponSlot> WeaponSlots { get; set; } = new HashSet<WeaponSlot>();
+    }
+}
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LoadoutBuilder.Data.Models
+{
+    public class WeaponSlot
+    {
+        public int SlotNumber { get; set; }
+        public int LoadoutId { get; set; }
+        [ForeignKey(nameof(LoadoutId))]
+        public Loadout Loadout { get; set; }
+        public int WeaponId { get; set; }
+        [ForeignKey(nameof(WeaponId))]
+        public Weapon Weapon { get; set; }
+        public int CamoId { get; set; }
+        [ForeignKey(nameof(CamoId))]
+        public Camo Camo { get; set; }
+        public int SightId { get; set; }
+        [ForeignKey(nameof(SightId))]
+        public Sight Sight { get; set; }
+
+    }
+}
+
